@@ -13,8 +13,21 @@
 <h1>Dealer Cards</h1>
     <p>
         {% for card in dealer_cards %}
-        <img src="static/cards/{{ card[-1][-1] }}"/>
+        {% if dealer_card_is_hidden and loop.index0 == 1 %}
+            <img src="static/cards/back.png"/>
+            
+        {% else %}       
+        <img src="static/cards/{{ card[-1][-1]}}"/>
+        {% endif %}
         {% endfor %}
+
+        <br>
+        {%if dealer_card_is_hidden%}
+            <h3>Current total for the dealer is: {{dealer_hidden_total}}</h3>
+        {%else%}
+            <h3>Total for the dealer is: {{dealer_total}}</h3>
+        {%endif%}
+        
     </p>
     <!--
         <h3>Total for the dealer is: {{ dealer_total }}</h3>
@@ -34,6 +47,14 @@
     <form action="/hit" method="post">
         <input type="submit" value="Hit"/>
     </form>
+
+    {% if is_game_over%}
+    If you wish to play again you can press the Restart button!
+
+    <form action="/restart" method="post">
+        <input type="submit" value="Restart"/>
+    </form>
+    {%endif%}
 
     The number of cards in the deck is: {{ number_of_cards }} . <br>
 
