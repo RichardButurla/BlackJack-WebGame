@@ -12,8 +12,9 @@
 
 <h1>Dealer Cards</h1>
     <p>
-        <img src="static/cards/{{ dealer_cards[0][-1][-1] }}"/>
-        <img src="static/cards/back.png"/>
+        {% for card in dealer_cards %}
+        <img src="static/cards/{{ card[-1][-1] }}"/>
+        {% endfor %}
     </p>
     <!--
         <h3>Total for the dealer is: {{ dealer_total }}</h3>
@@ -34,6 +35,8 @@
         <input type="submit" value="Hit"/>
     </form>
 
-    The number of cards in the deck is: {{ number_of_cards }}.
+    The number of cards in the deck is: {{ number_of_cards }} . <br>
+
+    Status: {{ game_status }}.
 
 {% endblock %} 
