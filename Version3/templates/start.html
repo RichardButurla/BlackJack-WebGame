@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <div class="box" id="game_box">
+
+        <div id="card_box"> 
+
+            <h1>Dealer Cards</h1>
+
+            <div id="card_layout">
+                {% for card in dealer_cards %}
+                {% if dealer_card_is_hidden and loop.index0 == 1 %}
+                    <img id="card" src="static/cards/back.png"/>
+                {% else %}       
+                    <img id="card" src="static/cards/{{ card[-1][-1] }}"/>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="card_box">
+            
+            <h1>Player Cards</h1>
+
+            <div id="card_layout"> 
+                {% for card in player_cards %}
+                        <img id="card" src="static/cards/{{ card[-1][-1] }}"/>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="box" id="game_status_box">
+
+        <h3> Number of cards left in deck: {{ number_of_cards }} .</h3> <br>
+        
+        
+
+        
+        {%if dealer_card_is_hidden%}
+            <h3>Current total for the dealer is: {{dealer_hidden_total}}</h3>
+        {%else%}
+            <h3>Total for the dealer is: {{dealer_total}}</h3>
+        {%endif%}
+        
+        <div class="score_status_box">
+
+            {% for card in dealer_cards %}
+                {% if dealer_card_is_hidden and loop.index0 == 1 %}
+                    <img class="card" src="static/cards/back.png"/>
+                {% else %}       
+                    <img class="card" src="static/cards/{{ card[-1][-1] }}"/>
+                {% endif %}
+            {% endfor %}       
+            
+        </div>
+
+        <h3>Total for the player is: {{ player_total }}</h3> <br>
+
+        <div class="score_status_box">
+            {% for card in player_cards %}
+            <img class="card" src="static/cards/{{ card[-1][-1] }}"/>
+            {% endfor %}
+        </div>
+
+            {% if is_game_over%}
+
+            <p> {{ game_status }}. </p>
+            
+            <button class="button" value="Restart" hx-post="/restart" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Restart Game</button>
+            {%endif%}  
+
+            <button class="button" value="Hit" hx-post="/hit" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Hit</button>
+
+            <button class="button" value="Stand" hx-post="/stand" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Stand</button>
+
+            
+
+</div>
+
+
+
+
+
+
+    
+
+{% endblock %} 

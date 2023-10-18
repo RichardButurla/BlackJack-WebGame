@@ -1,0 +1,137 @@
+body {
+    display: flex;
+    background-color: rgb(8, 32, 8);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.box {
+    height: 90%;
+}
+
+.button {
+    width: 80%;
+    max-width: 400px;
+    margin: 20px auto;
+    height: 100px;
+    background-color: rgb(3, 138, 3);
+    border: 3px solid black;
+}
+
+.button:hover {
+    background-color: rgb(2, 85, 2);
+}
+
+.score_status_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.card {
+    width: 60px;
+    max-width: 13vw;
+    height: 80px;
+    max-height: calc(11vh + 1.5vw); 
+    margin-right: -10%;
+    transform-origin: bottom center;
+}
+
+.card:last-child {
+    margin-right: 0;
+}
+
+#game_box,#game_status_box
+{
+    margin-top: 1%;
+}
+
+#game_box {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 2%;
+    box-sizing: border-box;
+}
+
+#game_status_box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2%;
+    background-color: green;
+    border-left: 2px solid black;
+    box-sizing: border-box;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 10px;
+    background-color: green;
+    border-bottom: 2px solid #000;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: white;
+}
+
+#card_box {
+    margin-top: 2%;
+    background-color: green;
+    border: 2px solid black;
+    padding: 2%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+#card_layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#card {
+    width: 100px;
+    max-width: 15vw;
+    height: 140px;
+    max-height: 20vh;
+    padding: 15px;
+    margin-right: -8%;
+}
+
+p {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .card {
+        width: 80px;
+        height: 110px;
+    }
+    #card {
+        width: 140px;
+        height: 200px;
+    }
+}
+
+/* For screens larger than 1024px */
+@media (min-width: 1024px) {
+    .card {
+        width: 90px;
+        height: 130px;
+    }
+    #card {
+        width: 160px;
+        height: 230px;
+    }
+}
