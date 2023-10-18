@@ -13,10 +13,14 @@ body
 {
     float: left; /* Allows the boxes to sit side by side */
     height: 90%;
+    width: 100%;
 }
 
 .button
 {
+    width: 80%;  
+    max-width: 400px;  
+    margin: 20px auto;  
     margin-top: 0px;
     width: 400px;
     height: 100px;
@@ -50,6 +54,11 @@ body
     margin-right: 0;
 }
 
+#game_box, #game_status_box {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;  /* Adjust width */
+}
 
 #game_box
 {
