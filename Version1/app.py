@@ -49,6 +49,10 @@ class BlackjackGame:
                 SessionManager.set("game_status", "It's a BlackJack Tie!")
             elif dealer_total < 17:
                 self.dealer_hit()
+                self.check_end_game_logic()
+            elif dealer_total < player_total:
+                SessionManager.set("game_status", "Player hit BlackJack!")
+                SessionManager.set("is_game_over", True)
 
     @classmethod
     def check_end_game_logic(self):
@@ -57,33 +61,40 @@ class BlackjackGame:
 
         SessionManager.set("dealer_card_is_hidden", False)  # Reveal dealer card
 
+        # If player hits BlackJack
         if player_total == 21:
-            if dealer_total < 17:
-                self.dealer_hit()
-            elif dealer_total == 21:
+            if dealer_total == 21:
                 SessionManager.set("game_status", "Black Jack Tie!")
-                SessionManager.set("is_game_over", True)
-            elif dealer_total < player_total:
+            elif dealer_total < 17:
+                self.dealer_hit()
+            else:
                 SessionManager.set("game_status", "Player hit BlackJack!")
+                SessionManager.set("is_game_over", True)
+
+        # If dealer hits BlackJack but player doesn't
         elif dealer_total == 21:
             SessionManager.set("game_status", "Dealer hit BlackJack!")
             SessionManager.set("is_game_over", True)
+
+        # If player or dealer goes bust
         elif player_total > 21:
             SessionManager.set("dealer_hidden_card", SessionManager.get("dealer")[1][-1][-1])
             SessionManager.set("game_status", "Player Bust!")
             SessionManager.set("is_game_over", True)
+
         elif dealer_total > 21:
             SessionManager.set("dealer_hidden_card", SessionManager.get("dealer")[1][-1][-1])
             SessionManager.set("game_status", "Dealer Bust!")
             SessionManager.set("is_game_over", True)
-        elif player_total > dealer_total:
-            SessionManager.set("game_status", "Player Wins!")
-            SessionManager.set("is_game_over", True)
-        elif dealer_total > player_total:
-            SessionManager.set("game_status", "Dealer Wins!")
-            SessionManager.set("is_game_over", True)
+
+        # If neither busts nor gets BlackJack, compare the totals
         else:
-            SessionManager.set("game_status", "It's a Tie!")
+            if player_total > dealer_total:
+                SessionManager.set("game_status", "Player Wins!")
+            elif dealer_total > player_total:
+                SessionManager.set("game_status", "Dealer Wins!")
+            else:
+                SessionManager.set("game_status", "It's a Tie!")
             SessionManager.set("is_game_over", True)
 
     @classmethod

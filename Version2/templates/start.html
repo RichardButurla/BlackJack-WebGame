@@ -46,35 +46,60 @@
 
     <h3> Number of cards left in deck: {{ number_of_cards }} .</h3> <br>
     
-    <h3>Total for the player is: {{ player_total }}</h3> <br>
-
-    {%if dealer_card_is_hidden%}
-            <h3>Current total for the dealer is: {{dealer_hidden_total}}</h3>
-        {%else%}
-            <h3>Total for the dealer is: {{dealer_total}}</h3>
-        {%endif%}
-        
-
-    <img id="card" src="static/cards/back.png"/>
-
-    <form action="/stand" method="post">
-        <input type="submit" value="Stand"/>
-    </form>
-    <form action="/hit" method="post">
-        <input type="submit" value="Hit"/>
-    </form>
-
-    {% if is_game_over%}
-    If you wish to play again you can press the Restart button!
-
-    <form action="/restart" method="post">
-        <input type="submit" value="Restart"/>
-    </form>
-    {%endif%}
-
     
 
-    Status: {{ game_status }}.
+    
+    {%if dealer_card_is_hidden%}
+        <h3>Current total for the dealer is: {{dealer_hidden_total}}</h3>
+    {%else%}
+        <h3>Total for the dealer is: {{dealer_total}}</h3>
+    {%endif%}
+    
+    <div class="score_status_box">
+
+        {% for card in dealer_cards %}
+            {% if dealer_card_is_hidden and loop.index0 == 1 %}
+                <img class="card" src="static/cards/back.png"/>
+            {% else %}       
+                <img class="card" src="static/cards/{{ card[-1][-1] }}"/>
+            {% endif %}
+        {% endfor %}       
+        
+    </div>
+
+    <h3>Total for the player is: {{ player_total }}</h3> <br>
+
+    <div class="score_status_box">
+        {% for card in player_cards %}
+        <img class="card" src="static/cards/{{ card[-1][-1] }}"/>
+        {% endfor %}
+    </div>
+
+        {% if is_game_over%}
+
+        <p> {{ game_status }}. </p>
+        
+        <form action="/restart" method="post">
+            <input class="button" type="submit" value="Restart"/>
+        </form>
+        {%endif%}  
+
+        <form action="/stand" method="post">
+            <input class="button" type="submit" value="Stand"/>
+        </form>
+
+        <form action="/hit" method="post">
+            <input class="button" type="submit" value="Hit"/>
+        </form>
+
+    
+    <!-- 
+    If you wish to play again you can press the Restart button! -->
+
+    
+    
+
+    
 
 </div>
 
