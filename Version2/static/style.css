@@ -1,0 +1,78 @@
+
+body
+{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(6, 93, 6);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+.box
+{
+    float: left; /* Allows the boxes to sit side by side */
+    height: 90%;
+}
+
+#game_box
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
+    margin-left: 30px;
+    width: 70%;
+    height: 100%; 
+    background-color: green;
+}
+#game_status_box
+{
+    margin-left: 2.5%;
+    margin-top: 2.5%;
+    margin-right: 30px;
+    width: 25%;
+    height: 100%;
+    background-color: green;
+    border-color: black;
+    border-style :solid;
+}
+
+h1
+{
+    padding: 10px;
+    margin-left: 42.5%; 
+    border: 2px solid #000;
+    display: inline-block;  /* This makes sure the box doesn't stretch the full width */
+    background-color: #f5f5f5; 
+    text-align: center;
+}
+
+h3
+{
+    size: 50px;
+    color: white;
+    padding-left: 12.5%;
+}
+  
+#card_box
+{
+    margin-top: 50px;
+    margin-bottom: 35px;
+    background-color: green;
+    border-color: black;
+    border-style :solid;
+}
+#card_layout
+{
+    display: flex;
+    justify-content: center;
+    
+}
+#card
+{
+   width: 13%;
+   height: 13%;
+   padding: 10px;
+}

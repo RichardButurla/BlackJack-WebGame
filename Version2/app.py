@@ -104,7 +104,7 @@ class BlackjackGame:
         SessionManager.set("game_status", "")
         SessionManager.set("is_game_over", False)
         self.check_start_game_logic(calc_total(SessionManager.get("player")), calc_total(SessionManager.get("dealer")))
-        
+
     @classmethod
     def get_dealer_hidden_total(self, dealer_hidden_total):
         if isinstance(dealer_hidden_total,list):
@@ -132,6 +132,7 @@ def render_game_template():
         game_status=SessionManager.get("game_status"),
         is_game_over=SessionManager.get("is_game_over")
     )
+
 
 
 @app.get("/")
