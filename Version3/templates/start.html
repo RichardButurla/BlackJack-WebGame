@@ -36,7 +36,7 @@
 
     <div class="box" id="game_status_box">
 
-        <h3> Number of cards left in deck: {{ number_of_cards }} .</h3> <br>
+        <h3> Number of cards left in deck: {{ number_of_cards }}</h3> <br>
         
         
 
@@ -69,14 +69,14 @@
 
             {% if is_game_over%}
 
-            <p> {{ game_status }}. </p>
+            <p> {{ game_status }} </p>
             
-            <button class="button" value="Restart" hx-post="/restart" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Restart Game</button>
+            <button class="button" id="restart-button" value="Restart" hx-post="/restart" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Restart Game</button>
             {%endif%}  
 
-            <button class="button" value="Hit" hx-post="/hit" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Hit</button>
+            <button class="button" id="hit-button" value="Hit" hx-post="/hit" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Hit</button>
 
-            <button class="button" value="Stand" hx-post="/stand" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Stand</button>
+            <button class="button" id="stand-button" value="Stand" hx-post="/stand" hx-trigger="click" hx-target="body" hx-swap="outerHTML">Stand</button>
 
             
 

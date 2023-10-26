@@ -31,9 +31,19 @@ body
     font-size: 20px;
 }
 
-.button:hover
+#hit-button:hover
 {
-    background-color: rgb(2, 85, 2);
+    background-color: #131890;
+}
+
+#stand-button:hover
+{
+    background-color: rgb(160, 126, 2);
+}
+
+#restart-button:hover
+{
+    background-color: rgb(156, 22, 22);
 }
 
 .score_status_box {
