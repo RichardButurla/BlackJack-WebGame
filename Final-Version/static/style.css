@@ -1,0 +1,169 @@
+
+body
+{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(8, 32, 8);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.box
+{
+    float: left; /* Allows the boxes to sit side by side */
+    height: 90%;
+    width: 100%;
+}
+
+.button
+{
+    width: 80%;  
+    max-width: 400px;  
+    margin: 20px auto;  
+    margin-top: 0px;
+    width: 400px;
+    height: 100px;
+    background-color: rgb(3, 138, 3);
+    border: 3px solid black;
+    color: white;
+    font-size: 20px;
+}
+
+#hit-button:hover
+{
+    background-color: #131890;
+}
+
+#stand-button:hover
+{
+    background-color: rgb(160, 126, 2);
+}
+
+#restart-button:hover
+{
+    background-color: rgb(156, 22, 22);
+}
+
+.score_status_box {
+    display: flex; 
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;  /* To align the cards vertically centered */
+    overflow: hidden;     /* To ensure that if the cards overlap the container's width, they are hidden */
+}
+
+.player_score_status_box {
+    display: flex; 
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;  /* To align the cards vertically centered */
+    overflow: hidden;     /* To ensure that if the cards overlap the container's width, they are hidden */
+}
+
+.card {
+    width: 13%;
+    height: 11%;
+    margin-right: -10%;  /* This creates the overlap effect */
+    transform-origin: bottom center;
+}
+
+
+/* Reset margin for the last card to avoid unnecessary space at the end */
+.card:last-child {
+    margin-right: 0;
+}
+
+#game_box, #game_status_box {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;  /* Adjust width */
+}
+
+#game_box
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 2.5%;
+    margin-left: 30px;
+    width: 70%;
+    height: 100%; 
+}
+#game_status_box
+{
+    margin-left: 2.5%;
+    margin-top: 2.5%;
+    margin-right: 30px;
+    width: 25%;
+    height: 100%;
+    min-height: 92.5vh;
+    background-color: green;
+    border-color: black;
+    border-style :solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;  /* Distributes the space around items */
+    align-items: center;
+}
+
+h1
+{
+    margin-left: 42.5%; 
+    margin-top: -2%;
+    border: 2px solid #000;
+    border-top: 0px;
+    display: inline-block;  /* This makes sure the box doesn't stretch the full width */
+    background-color: green; 
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+h3
+{
+    size: 50px;
+    color: white;
+}
+  
+#card_box
+{
+    margin-top: 50px;
+    margin-bottom: 35px;
+    background-color: green;
+    border-color: black;
+    border-style :solid;
+    height: 400px;
+}
+
+#player_card_box
+{
+    margin-top: 50px;
+    margin-bottom: 35px;
+    background-color: green;
+    border-color: black;
+    border-style :solid;
+    height: 400px;
+}
+
+#card_layout
+{
+    display: flex;
+    justify-content: center;
+    padding-right: 8%;  /* This should match the absolute value of the card's negative margin */
+    
+}
+#card
+{
+   width: 13%;
+   height: 13%;
+   padding: 15px;
+   margin-right: -8%;  /* This creates the overlap effect */
+}
+
+p{
+    font-size: 25px;
+    color: white;
+}
+
