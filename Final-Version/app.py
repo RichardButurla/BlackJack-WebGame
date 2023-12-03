@@ -1,4 +1,5 @@
 import random
+import DBcm
 from flask import Flask, render_template, request, session
 from model.data import make_deck, init_deck_values
 from calcs import calc_total
@@ -6,6 +7,125 @@ from calcs import calc_total
 app = Flask(__name__)
 app.secret_key = "kfke hrt'oerj erterutv'rtjv 'oieqrut0345uv 0'34qutv0rutv 'eqrutv equeqtr' u"
 deck_values = init_deck_values()
+
+credentials = {
+    "host": "localhost",
+    "database": "BlackjackDB",
+    "user": "richard",
+    "password": "richpassword"
+}
+
+class DatabaseManager:
+    """Handles the update and insertion of our data"""
+    @staticmethod
+    def insert_game_data(user, game_outcome):
+
+        DatabaseManager.check_valid_user(user)
+
+        with DBcm.UseDatabase(credentials) as database:
+            SQL = """ 
+                insert into user_game_statistics
+                (user, outcomes)
+                values
+                (%s , %s)
+            """
+            database.execute(SQL,(user,game_outcome,))
+
+        DatabaseManager.update_database(user)
+
+    @staticmethod
+    def check_valid_user(user):
+        with DBcm.UseDatabase(credentials) as database:
+            SQL = """
+                select distinct user from user_statistics 
+                where user = %s
+            """
+            database.execute(SQL, (user,))
+            returned_user = database.fetchone()
+
+            # If the user doesn't exist, insert a default record
+            if returned_user == None:
+                default_insert_SQL = """
+                    insert into user_statistics (user, win_rate, bust_rate, highest_win_streak)
+                    values (%s, 0, 0, 0)
+                """
+                database.execute(default_insert_SQL, (user,))
+
+    @staticmethod
+    def update_database(user):
+        with DBcm.UseDatabase(credentials) as database:
+
+            SQL = """
+                update user_statistics
+                set win_rate = %s,
+                    bust_rate = %s,
+                    highest_win_streak = %s
+                where user = %s
+            """
+
+            wins = DatabaseManager.get_numbered_user_data_from_table(user, "Win", "user_game_statistics")
+            losses = DatabaseManager.get_numbered_user_data_from_table(user, "Loss", "user_game_statistics")
+            busts = DatabaseManager.get_numbered_user_data_from_table(user, "Bust", "user_game_statistics")
+            draws = DatabaseManager.get_numbered_user_data_from_table(user, "Draw", "user_game_statistics")
+
+            total_games = wins + losses + busts + draws
+            win_rate = wins / total_games
+            bust_rate = busts / total_games
+            highest_win_streak = DatabaseManager.get_highest_win_streak(user)
+
+            database.execute(SQL,(win_rate,bust_rate,highest_win_streak,user,))
+
+    @staticmethod
+    def get_highest_win_streak(user):
+        results = []
+        highest_win_streak = 0
+        current_streak_count = 0
+
+        with DBcm.UseDatabase(credentials) as database:
+            
+            SQL = """
+                select * from user_game_statistics 
+                where user = %s
+            """
+            database.execute(SQL,(user,))
+            results = database.fetchall()
+
+        for result in results:
+            if result[1] == "Win":
+                current_streak_count = current_streak_count + 1
+            else:
+                if current_streak_count > highest_win_streak: 
+                    highest_win_streak = current_streak_count
+                current_streak_count = 0 
+
+        # Check after the loop for any ongoing winning streak
+        if current_streak_count > highest_win_streak:
+            highest_win_streak = current_streak_count
+        
+        return highest_win_streak
+            
+    @staticmethod
+    def get_detailed_user_data_from_table(user, data, table):
+        with DBcm.UseDatabase(credentials) as database:
+            SQL = f"""
+                select {data} from {table}
+                where user = '{user}'
+            """
+            database.execute(SQL)
+            results = database.fetchone()
+            return results[0]
+        
+    @staticmethod
+    def get_numbered_user_data_from_table(user, data, table):
+        with DBcm.UseDatabase(credentials) as database:
+            SQL = f"""
+                select count(*) from {table}
+                where user = '{user}' and outcomes = '{data}'
+            """
+            database.execute(SQL)
+            results = database.fetchone()
+            return results[0]
+
 
 
 class SessionManager:
@@ -49,9 +169,11 @@ class BlackjackGame:
             if dealer_total == 21:
                 SessionManager.set("game_status", "It's a BlackJack Tie!")
                 SessionManager.set("is_game_over", True)
+                DatabaseManager.insert_game_data(SessionManager.get("user"), "Draw")
             else:
                 SessionManager.set("game_status", "Player hit BlackJack!")
                 SessionManager.set("is_game_over", True)
+                DatabaseManager.insert_game_data(SessionManager.get("user"), "Win")
 
     @classmethod
     def check_end_game_logic(self):
@@ -64,20 +186,25 @@ class BlackjackGame:
         if dealer_total == 21 and len(SessionManager.get("dealer")) == 2:
             SessionManager.set("game_status", "Dealer has BlackJack!")
             SessionManager.set("is_game_over", True)
+            DatabaseManager.insert_game_data(SessionManager.get("user"), "Loss")
         elif dealer_total < 17:
             self.dealer_hit()
         elif dealer_total > 21:
             SessionManager.set("dealer_hidden_card", SessionManager.get("dealer")[1][-1][-1])
             SessionManager.set("game_status", "Dealer Bust!")
             SessionManager.set("is_game_over", True)
+            DatabaseManager.insert_game_data(SessionManager.get("user"), "Win")
         # If neither busts nor gets BlackJack, compare the totals
         else:
             if player_total > dealer_total:
                 SessionManager.set("game_status", "Player Wins!")
+                DatabaseManager.insert_game_data(SessionManager.get("user"), "Win")
             elif dealer_total > player_total:
                 SessionManager.set("game_status", "Dealer Wins!")
+                DatabaseManager.insert_game_data(SessionManager.get("user"), "Loss")
             else:
                 SessionManager.set("game_status", "It's a Tie!")
+                DatabaseManager.insert_game_data(SessionManager.get("user"), "Draw")
             SessionManager.set("is_game_over", True)
 
 
@@ -90,9 +217,11 @@ class BlackjackGame:
             else:
                 SessionManager.set("game_status", "Player Bust!")
                 SessionManager.set("is_game_over", True)
+                DatabaseManager.insert_game_data(SessionManager.get("user"), "Bust")
 
     @classmethod
     def start_game(self):
+        SessionManager.set("user", "Reacu")
         SessionManager.set("deck", make_deck())
         SessionManager.set("player", [self.draw() for _ in range(2)])
         SessionManager.set("dealer", [self.draw() for _ in range(2)])
